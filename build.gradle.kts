@@ -14,6 +14,10 @@ plugins {
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
+    // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
+    id("io.gitlab.arturbosch.detekt") version "1.21.0-RC1"
+    // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
 }
 
 group = properties("pluginGroup")
@@ -21,17 +25,26 @@ version = properties("pluginVersion")
 
 // Configure project's dependencies
 repositories {
+    gradlePluginPortal()
+    google()
     mavenCentral()
+//    maven { url 'https://jitpack.io' }
+//    maven { url 'https://maven.aliyun.com/repository/google' }
+//    maven { url 'https://maven.aliyun.com/repository/jcenter' }
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
+//    localPath.set("D:\\android\\android-studio-new")
+    localPath.set(properties("StudioRunPath"))
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-    plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+    plugins.set(
+        properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty)
+    )
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -111,6 +124,14 @@ tasks {
         // pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
+        channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }
+            .split('.').first()))
     }
+
+
+    dependencies {
+        detekt("io.gitlab.arturbosch.detekt:detekt-cli:1.21.0-RC1")
+        compileOnly(files("lib/wizard-template.jar"))
+    }
+
 }
