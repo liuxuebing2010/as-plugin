@@ -8,7 +8,7 @@ val mvvmActivityTemplate
     get() = template {
 //        revision = 1
         name = "MVVM Activity"
-        description = "适用于BigaDemoMVVM框架的Activity"
+        description = "适用于OU项目中MVVM框架的Activity"
 //        minApi = MIN_API
 //        minBuildApi = MIN_API
 

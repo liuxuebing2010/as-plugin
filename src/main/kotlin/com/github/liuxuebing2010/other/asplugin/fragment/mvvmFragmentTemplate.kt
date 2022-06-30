@@ -6,7 +6,7 @@ val mvvmFragmentTemplate
     get() = template {
 //        revision = 1
         name = "MVVM Fragment"
-        description = "适用于BigaDemoMVVM框架的Fragment"
+        description = "适用于OU项目中MVVM框架的Fragment"
 //        minApi = MIN_API
 //        minBuildApi = MIN_API
 
@@ -33,7 +33,8 @@ val mvvmFragmentTemplate
             default = "fragment_main"
             help = "请输入布局的名字"
             constraints = listOf(Constraint.LAYOUT, Constraint.UNIQUE, Constraint.NONEMPTY)
-            suggest = { "${fragmentToLayout(fragmentClass.value.lowercase())}" }
+//            suggest = { "${fragmentToLayout(fragmentClass.value.lowercase())}" }
+            suggest = { "fragment_${camelCaseToUnderlines(fragmentClass.value)}" }
         }
 
         val packageName = defaultPackageNameParameter
